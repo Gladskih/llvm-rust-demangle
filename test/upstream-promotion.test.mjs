@@ -23,12 +23,13 @@ async function baseRepository(context) {
   git("config", "user.name", "Test");
   git("config", "user.email", "test@example.invalid");
   await writeFile(join(root, "package.json"), JSON.stringify({ version: "0.1.0" }) + "\n");
+  await writeFile(join(root, "README.md"), "Built from LLVM 23.1.3\n");
   await writeFile(join(root, "package-lock.json"),
     JSON.stringify({ version: "0.1.0", packages: { "": { version: "0.1.0" } } }) + "\n");
   await writeFile(join(root, "upstream.json"), JSON.stringify({
     llvmVersion: "llvmorg-23.1.3", llvmCommit: "1".repeat(40), files: { "llvm/foo.h": "old" },
   }));
-  git("add", "package.json", "package-lock.json", "upstream.json");
+  git("add", "package.json", "package-lock.json", "upstream.json", "README.md");
   git("commit", "-m", "Base");
   const base = git("rev-parse", "HEAD");
   git("remote", "add", "origin", join(root, "remote.git"));
@@ -109,6 +110,7 @@ test("upstream checks commit fresh hashes and dispatch only a new candidate", {
   assert.equal(result.status, 0, result.stderr);
   const pin = JSON.parse(await readFile(join(fixture.root, "upstream.json"), "utf8"));
   assert.equal(pin.llvmVersion, "llvmorg-24.1.0");
+  assert.equal(await readFile(join(fixture.root, "README.md"), "utf8"), "Built from LLVM 24.1.0\n");
   assert.equal(pin.files["llvm/foo.h"],
     "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad");
   assert.equal(JSON.parse(await readFile(join(fixture.root, "package.json"), "utf8")).version, "0.2.0");

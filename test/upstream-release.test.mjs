@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { updateUpstreamReferences } from "../scripts/upstream-release.mjs";
 import { test } from "node:test";
 import { compareVersions, downloadHash, nextPackageVersion, sourceRepository, updatedPin,
   updateExportedVersion, upstreamRelease } from "../scripts/upstream-release.mjs";
@@ -94,4 +95,17 @@ test("the ARM exported LLVM version follows its updated source pin", () => {
   assert.equal(updateExportedVersion("export const llvmVersion = '21.1.8';\n", "23.1.3"),
     `export const llvmVersion = "23.1.3";\n`);
   assert.throws(() => updateExportedVersion("changed upstream wrapper", "23.1.3"), /declaration changed/);
+});
+
+test("upstream references follow library pins without rewriting toolchain versions", () => {
+  assert.equal(updateUpstreamReferences("LLVM 23.1.3 llvmorg-23.1.3 /old Emscripten 23.1.3",
+    { llvmCommit: "old", llvmVersion: "llvmorg-23.1.3" },
+    { llvmCommit: "new", llvmVersion: "llvmorg-24.1.0" }),
+  "LLVM 24.1.0 llvmorg-24.1.0 /new Emscripten 23.1.3");
+  assert.equal(updateUpstreamReferences("XED v2026.08.23 XED 2026.08.23 /tag/v2026.08.23 old",
+    { xedCommit: "old", xedVersion: "2026.08.23" },
+    { xedCommit: "new", xedVersion: "2026.10.01" }),
+  "XED v2026.10.01 XED 2026.10.01 /tag/v2026.10.01 new");
+  assert.equal(updateUpstreamReferences("commit old", { commit: "old" }, { commit: "new" }),
+    "commit new");
 });

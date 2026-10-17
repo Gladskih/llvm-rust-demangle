@@ -82,3 +82,15 @@ export function updateExportedVersion(source, version) {
   assert(declaration.test(source), "LLVM version declaration changed");
   return source.replace(declaration, "export const llvmVersion = " + JSON.stringify(version) + ";");
 }
+
+export function updateUpstreamReferences(source, pin, next) {
+  let updated = source.replaceAll(pin.llvmCommit ?? pin.xedCommit ?? pin.commit,
+    next.llvmCommit ?? next.xedCommit ?? next.commit);
+  const version = pin.llvmVersion ?? pin.xedVersion;
+  if (!version) return updated;
+  const previous = version.replace(/^llvmorg-/, "");
+  const replacement = (next.llvmVersion ?? next.xedVersion).replace(/^llvmorg-/, "");
+  const prefixes = pin.llvmCommit ? ["LLVM ", "llvmorg-"] : ["XED ", "XED v", "/tag/v"];
+  for (const prefix of prefixes) updated = updated.replaceAll(prefix + previous, prefix + replacement);
+  return updated;
+}
