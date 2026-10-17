@@ -1,0 +1,6 @@
+- Follow CONTRIBUTING.md as the quality gate and audit final changes before reporting success.
+- Preserve fully local browser operation and memory-safe parsing of malformed names.
+- Do not impose arbitrary input or resource policy caps in the package.
+- Verify format behavior against pinned LLVM source/tests, never model intuition alone.
+- Prefer warnings to exceptions for parse failures, and preserve exact integer values.
+- Keep tool output concise and report suspicious behavior immediately.
