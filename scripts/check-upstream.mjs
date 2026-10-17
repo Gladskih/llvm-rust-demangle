@@ -1,7 +1,7 @@
 import { execFileSync } from "node:child_process";
 import { appendFile, readFile, writeFile } from "node:fs/promises";
 import { github } from "./release-assets.mjs";
-import { nextPackageVersion, updatedPin, updateExportedVersion, updateUpstreamReferences,
+import { nextPackageVersion, updatedPin, updateExportedVersion,
   upstreamRelease } from "./upstream-release.mjs";
 
 const pin = JSON.parse(await readFile("upstream.json"));
@@ -18,8 +18,6 @@ if (!release) {
   else {
     const next = await updatedPin(pin, release);
     await writeFile("upstream.json", JSON.stringify(next, null, 2) + "\n");
-    const readme = await readFile("README.md", "utf8");
-    await writeFile("README.md", updateUpstreamReferences(readme, pin, next));
     const wrapper = await readFile("src/index.ts", "utf8").catch(error => {
       if (error.code === "ENOENT") return null;
       throw error;
@@ -33,7 +31,7 @@ if (!release) {
     lock.packages[""].version = manifest.version;
     await writeFile("package-lock.json", JSON.stringify(lock, null, 2) + "\n");
     execFileSync("git", ["switch", "-c", branch]);
-    execFileSync("git", ["add", "upstream.json", "package.json", "package-lock.json", "README.md"]);
+    execFileSync("git", ["add", "upstream.json", "package.json", "package-lock.json"]);
     if (wrapper) execFileSync("git", ["add", "src/index.ts"]);
     execFileSync("git", ["commit", "-m", "Update upstream to " + release.tag], { stdio: "inherit" });
     execFileSync("git", ["push", "origin", branch], { stdio: "inherit" });

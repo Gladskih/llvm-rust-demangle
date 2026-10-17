@@ -14,7 +14,7 @@ if (candidate) assert.equal(candidate.split(/\s+/)[0], sha, "Candidate branch ch
 const base = run("rev-parse", "HEAD^");
 const changed = run("diff", "--name-only", base, sha).split("\n").sort();
 assert(changed.every(path => ["package-lock.json", "package.json", "upstream.json",
-  "src/index.ts", "README.md"].includes(path)) && ["package-lock.json", "package.json", "upstream.json"]
+  "src/index.ts"].includes(path)) && ["package-lock.json", "package.json", "upstream.json"]
   .every(path => changed.includes(path)), "Unexpected candidate files");
 const tag = "v" + JSON.parse(await readFile("package.json")).version;
 const oldVersion = JSON.parse(run("show", base + ":package.json")).version;
