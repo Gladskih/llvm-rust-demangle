@@ -1,0 +1,72 @@
+{
+  "name": "llvm-rust-demangle",
+  "version": "0.1.0",
+  "description": "Local LLVM Rust demangler compiled to WebAssembly",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/browser.js",
+      "node": "./dist/node.js",
+      "default": "./dist/browser.js"
+    },
+    "./build-info.json": "./dist/build-info.json",
+    "./llvm-rust-demangle.wasm": "./dist/llvm-rust-demangle.wasm"
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md",
+    "licenses/",
+    "upstream.json"
+  ],
+  "scripts": {
+    "upstream:update": "node scripts/update-upstream.mjs",
+    "sources:fetch": "node scripts/fetch-sources.mjs",
+    "build:wasm": "bash scripts/build-wasm.sh",
+    "build": "node scripts/build.mjs",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit --strict --module nodenext --target es2022 test/types.ts",
+    "test:coverage": "node --experimental-test-coverage --test-coverage-include=dist/*.js --test-coverage-exclude=dist/llvm-rust-demangle.js --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 --test test/*.test.mjs",
+    "test:upstream": "node scripts/test-upstream.mjs",
+    "test:browser": "playwright test",
+    "test:native": "bash scripts/test-native.sh",
+    "test:differential": "node scripts/test-differential.mjs",
+    "test:mutation": "node scripts/test-mutations.mjs",
+    "verify:package": "node scripts/verify-package.mjs",
+    "pack:verified": "node scripts/pack.mjs",
+    "verify": "npm run lint && npm run typecheck && npm run test:coverage && npm run test:upstream && npm run test:mutation && npm run test:browser && npm run verify:package",
+    "prepack": "npm run build && npm run verify:package"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gladskih/llvm-rust-demangle.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Gladskih/llvm-rust-demangle/issues"
+  },
+  "homepage": "https://github.com/Gladskih/llvm-rust-demangle#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "llvm",
+    "rust",
+    "demangle",
+    "webassembly",
+    "wasm",
+    "typescript"
+  ],
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.64.0",
+    "eslint": "10.12.0",
+    "globals": "17.13.0",
+    "typescript": "7.0.2"
+  }
+}

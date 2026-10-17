@@ -44,3 +44,5 @@ source changes, safety adaptations, corpora and all gates before accepting an up
 
 Build metadata is exported as `llvm-rust-demangle/build-info.json`.
 Wrapper: MIT. LLVM and linked runtime notices: see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+Upstream implementation: [LLVM source](https://github.com/llvm/llvm-project/blob/0d261d1ca552c95a8f007e061c787ac7132fbcbc/llvm/lib/Demangle/RustDemangle.cpp).
