@@ -77,7 +77,7 @@ Exports include `llvm-rust-demangle/ast-schema.json` and
 `llvm-rust-demangle/build-info.json`. Wrapper code is MIT; LLVM and runtime
 notices are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-References: [pinned LLVM parser](https://github.com/llvm/llvm-project/blob/0d261d1ca552c95a8f007e061c787ac7132fbcbc/llvm/lib/Demangle/RustDemangle.cpp),
+References: [LLVM parser](https://github.com/llvm/llvm-project/blob/main/llvm/lib/Demangle/RustDemangle.cpp),
 [Rust RFC 2603](https://rust-lang.github.io/rfcs/2603-rust-symbol-name-mangling-v0.html).
 
 Release automation lives in `.github/workflows/publish.yml`. A `v<package-version>`
