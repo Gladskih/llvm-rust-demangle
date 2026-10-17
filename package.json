@@ -1,6 +1,6 @@
 {
   "name": "llvm-rust-demangle",
-  "version": "0.1.0",
+  "version": "0.1.0-rc.0",
   "description": "Local LLVM Rust demangler with a structured parse tree, compiled to WebAssembly",
   "type": "module",
   "license": "MIT",
