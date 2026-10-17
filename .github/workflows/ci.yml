@@ -31,6 +31,8 @@ jobs:
         with:
           path: .build/emsdk
           key: demangle-sdk-${{ runner.os }}-${{ steps.pins.outputs.sdk }}
+      - name: Verify release maintenance
+        run: node --test test/release-assets.test.mjs test/upstream-release.test.mjs test/upstream-promotion.test.mjs test/registry-release.test.mjs
       - run: npm ci
       - run: npm run build:wasm
       - run: npm run test:native
