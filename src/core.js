@@ -1,7 +1,7 @@
 import { validateInput } from "./validation.js";
 
 function failure(status, warning) {
-  return { status, text: null, warnings: [warning] };
+  return { status, ast: null, warnings: [warning] };
 }
 
 function checkedRange(pointer, size, heap) {
@@ -15,7 +15,7 @@ function checkedRange(pointer, size, heap) {
   return heap.subarray(address, address + length);
 }
 
-function invoke(module, input) {
+function invoke(module, input, entry) {
   const bytes = new TextEncoder().encode(input);
   const pointer = module._input_buffer(bytes.length);
   if (pointer === 0) return failure("limit", "Unable to allocate WASM input memory.");
@@ -23,21 +23,24 @@ function invoke(module, input) {
   buffer.set(bytes);
   buffer[bytes.length] = 0;
   return JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(
-    checkedRange(module._demangle(bytes.length), module._result_size(), module.HEAPU8)));
+    checkedRange(entry(bytes.length), module._result_size(), module.HEAPU8)));
 }
 
 export function createApi(module) {
   let failed = false;
-  function run(input) {
+  function run(input, entry) {
     const warning = validateInput(input);
     if (warning) return failure("invalid", warning);
     if (failed) return failure("error", "Create a new demangler after a fatal WASM failure.");
     try {
-      return invoke(module, input);
+      return invoke(module, input, entry);
     } catch (error) {
       failed = true;
       return failure("error", `WASM failure: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
-  return Object.freeze({ demangle: run });
+  return Object.freeze({
+    demangle: input => run(input, module._demangle),
+    demangleWithText: input => ({ text: null, ...run(input, module._demangle_with_text) }),
+  });
 }

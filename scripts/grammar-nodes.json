@@ -1,0 +1,71 @@
+{
+  "Symbol": {},
+  "CrateRootPath": {},
+  "InherentImplPath": {},
+  "TraitImplPath": {},
+  "TraitDefinitionPath": {},
+  "NestedPath": {
+    "namespace": "string"
+  },
+  "GenericPath": {},
+  "BackrefPath": {
+    "targetOffset": "string"
+  },
+  "ArrayType": {},
+  "SliceType": {},
+  "TupleType": {},
+  "SharedReferenceType": {},
+  "MutableReferenceType": {},
+  "ConstPointerType": {},
+  "MutablePointerType": {},
+  "FunctionType": {},
+  "DynTraitType": {},
+  "BackrefType": {
+    "targetOffset": "string"
+  },
+  "NamedType": {},
+  "BasicType": {
+    "type": "BasicTypeName"
+  },
+  "ImplPath": {},
+  "GenericArgument": {},
+  "FunctionSignature": {
+    "safety?": "string",
+    "abi?": "string"
+  },
+  "DynBounds": {},
+  "DynTrait": {},
+  "AssociatedBinding": {},
+  "Binder": {},
+  "Constant": {
+    "type?": "BasicTypeName",
+    "targetOffset?": "string"
+  },
+  "IntegerData": {
+    "sign?": "string"
+  },
+  "BooleanData": {},
+  "CharacterData": {},
+  "Identifier": {
+    "value": "string",
+    "encoding": "string"
+  },
+  "Disambiguator": {
+    "value": "string"
+  },
+  "BinderCount": {
+    "value": "string"
+  },
+  "Base62Number": {
+    "value": "string"
+  },
+  "DecimalNumber": {
+    "value": "string"
+  },
+  "HexNumber": {
+    "value": "string"
+  },
+  "Suffix": {
+    "value": "string"
+  }
+}

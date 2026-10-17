@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { createApi } from "../dist/core.js";
 
-function runtime(result = { status: "success", text: "native result", warnings: [] }) {
+function runtime(result = { status: "success", ast: { root: 0, nodes: [] }, warnings: [] }) {
   const bytes = new TextEncoder().encode(JSON.stringify(result));
   const module = {
     HEAPU8: new Uint8Array(8192),
@@ -13,6 +13,10 @@ function runtime(result = { status: "success", text: "native result", warnings: 
       return 5000;
     },
     _result_size: () => bytes.length,
+  };
+  module._demangle_with_text = length => {
+    module.formatted = true;
+    return module._demangle(length);
   };
   return module;
 }
@@ -34,7 +38,7 @@ test("copies ASCII bytes and returns detached results", () => {
 test("invalid input returns diagnostics before accessing WASM", () => {
   const api = createApi({});
   assert.equal(api.demangle(null).status, "invalid");
-  assert.equal(api.demangle("").text, null);
+  assert.equal(api.demangle("").ast, null);
 });
 
 test("quarantines a trapped instance and reports the need to recreate it", () => {
@@ -76,7 +80,7 @@ for (const size of [0, -1, -(2 ** 32), 1.5, NaN, 8192]) {
 }
 
 test("accepts outputs over 1 MiB when they fit in WASM memory", () => {
-  const result = { status: "invalid", text: null,
+  const result = { status: "invalid", ast: null,
     warnings: ["x".repeat(1048577)] };
   const module = runtime(result);
   module.HEAPU8 = new Uint8Array(2 * 1048576);
@@ -157,4 +161,24 @@ test("copies UTF-8 bytes and passes their byte length", () => {
   assert.equal(module.HEAPU8[8], 0xcf);
   assert.equal(module.HEAPU8[9], 0x80);
   assert.equal(module.HEAPU8[10], 0);
+});
+
+test("selects the native formatting entry and defaults failure text to null", () => {
+  const module = runtime({ status: "success", ast: { root: 0, nodes: [] }, text: "native", warnings: [] });
+  const api = createApi(module);
+  assert.equal(api.demangle("?").status, "success");
+  assert.equal(module.formatted, undefined);
+  assert.equal(api.demangleWithText("?").text, "native");
+  assert.equal(module.formatted, true);
+  assert.equal(api.demangleWithText(null).text, null);
+  module._input_buffer = () => 0;
+  assert.equal(api.demangleWithText("?").text, null);
+});
+
+test("formatter traps quarantine both methods", () => {
+  const module = runtime();
+  module._demangle_with_text = () => { throw new WebAssembly.RuntimeError("formatter"); };
+  const api = createApi(module);
+  assert.equal(api.demangleWithText("?").text, null);
+  assert.match(api.demangle("?").warnings[0], /new demangler/);
 });

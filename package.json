@@ -1,7 +1,7 @@
 {
   "name": "llvm-rust-demangle",
   "version": "0.1.0",
-  "description": "Local LLVM Rust demangler compiled to WebAssembly",
+  "description": "Local LLVM Rust demangler with a structured parse tree, compiled to WebAssembly",
   "type": "module",
   "license": "MIT",
   "engines": {
@@ -15,7 +15,8 @@
       "default": "./dist/browser.js"
     },
     "./build-info.json": "./dist/build-info.json",
-    "./llvm-rust-demangle.wasm": "./dist/llvm-rust-demangle.wasm"
+    "./llvm-rust-demangle.wasm": "./dist/llvm-rust-demangle.wasm",
+    "./ast-schema.json": "./dist/ast-schema.json"
   },
   "types": "./dist/index.d.ts",
   "files": [

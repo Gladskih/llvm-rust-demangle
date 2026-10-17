@@ -6,7 +6,9 @@ for the exact source revision, files and SHA-256 hashes.
 
 Generated adaptations in .build/ check output allocation arithmetic, replace aborts
 with allocation exceptions and give output buffers exception-safe ownership. The
-checksummed upstream files remain unchanged. The parser's grammar is LLVM's.
+checksummed upstream files remain unchanged. The parser's grammar is LLVM's. The build also instruments grammar operations to
+capture a wrapper-defined parse tree and makes native presentation optional. Generated
+types/schemas derive from those explicit captures and LLVM's BasicType enum where present.
 
 The pinned Emscripten build links its runtime/system libraries. Redistribute:
 

@@ -36,7 +36,7 @@ em++ -std=c++17 -Oz -flto -fwasm-exceptions -fno-rtti -UNDEBUG "${INCLUDES[@]}" 
   -sDYNAMIC_EXECUTION=0 -sFILESYSTEM=0 -sALLOW_MEMORY_GROWTH=1 \
   -sINITIAL_MEMORY=4194304 -sMAXIMUM_MEMORY=4GB -sSTACK_SIZE=1048576 \
   -sABORTING_MALLOC=0 -sASSERTIONS=1 -sSTACK_OVERFLOW_CHECK=2 \
-  '-sEXPORTED_FUNCTIONS=["_input_buffer","_demangle","_result_size"]' \
+  '-sEXPORTED_FUNCTIONS=["_input_buffer","_demangle","_demangle_with_text","_result_size"]' \
   '-sEXPORTED_RUNTIME_METHODS=["HEAPU8"]' -o artifacts/llvm-rust-demangle.js
 cp .build/llvm/llvm/LICENSE.TXT licenses/LLVM.txt
 cp "$SDK/upstream/emscripten/LICENSE" licenses/emscripten-LICENSE.txt

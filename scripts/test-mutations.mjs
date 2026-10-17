@@ -4,8 +4,10 @@ import { readFile, writeFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 
 const mutations = [
+  ["dist/core.js", "run(input, module._demangle_with_text)", "run(input, module._demangle)"],
+  ["dist/core.js", "run(input, module._demangle)", "run(input, module._demangle_with_text)"],
   ["dist/validation.js", "!input.isWellFormed()", "false"],
-  ["dist/core.js", "module._demangle(bytes.length)", "module._demangle(input.length)"],
+  ["dist/core.js", "entry(bytes.length)", "entry(input.length)"],
   ["dist/validation.js", "typeof input !== \"string\"", "false"],
   ["dist/validation.js", "input.length === 0", "false"],
   ["dist/validation.js", "input.charCodeAt(index) < 0x20", "false"],

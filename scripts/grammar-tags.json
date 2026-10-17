@@ -1,0 +1,23 @@
+{
+  "paths": {
+    "C": "CrateRootPath",
+    "M": "InherentImplPath",
+    "X": "TraitImplPath",
+    "Y": "TraitDefinitionPath",
+    "N": "NestedPath",
+    "I": "GenericPath",
+    "B": "BackrefPath"
+  },
+  "types": {
+    "A": "ArrayType",
+    "S": "SliceType",
+    "T": "TupleType",
+    "R": "SharedReferenceType",
+    "Q": "MutableReferenceType",
+    "P": "ConstPointerType",
+    "O": "MutablePointerType",
+    "F": "FunctionType",
+    "D": "DynTraitType",
+    "B": "BackrefType"
+  }
+}

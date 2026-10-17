@@ -2,7 +2,9 @@
 
 Follow the pinned LLVM implementation and tests. Parsing and execution stay local in
 the browser; consumers have no dependencies. Never reconstruct an AST from printed text.
-These LLVM parsers produce text directly and expose no AST. Rust supports v0 only.
+Instrument the pinned LLVM grammar directly to capture structured nodes and semantic
+values. Never derive structure from presentation. Keep analysis and native text as
+separate methods; analysis must not build a presentation buffer.
 Keep upstream behavior, including its documented recursion limit; add no wrapper policy caps.
 
 Use small cohesive modules, double quotes, const by default, descriptive names, functions

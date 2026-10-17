@@ -6,9 +6,11 @@ import { fileURLToPath } from "node:url";
 process.chdir(fileURLToPath(new URL("../", import.meta.url)));
 await mkdir("dist", { recursive: true });
 for (const name of await readdir("src")) await cp(`src/${name}`, `dist/${name}`);
-for (const name of ["llvm-rust-demangle.js", "llvm-rust-demangle.wasm"]) {
+for (const name of ["llvm-rust-demangle.js", "llvm-rust-demangle.wasm", "ast-schema.json"]) {
   await cp(`artifacts/${name}`, `dist/${name}`);
 }
+await writeFile("dist/index.d.ts", await readFile("artifacts/ast.d.ts", "utf8") +
+  await readFile("src/index.d.ts", "utf8"));
 const files = {};
 for (const name of (await readdir("dist")).filter(name => name !== "build-info.json").sort()) {
   const bytes = await readFile(`dist/${name}`);
