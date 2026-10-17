@@ -38,6 +38,11 @@ caps are added. Allocation failures produce diagnostics; fatal WASM traps quaran
 an instance. Rust retains upstream's v0 grammar and recursion limit of 500.
 These finite checks are evidence, not proof for every possible malformed input.
 
-Hosted CI is configured for Linux builds and Windows/Linux Node 24/26 consumers;
-it has not been executed for these local repositories. GitHub/npm publication has
-not been performed.
+Hosted CI passed the Linux build and Windows/Linux Node 24/26 consumer matrix:
+https://github.com/Gladskih/llvm-rust-demangle/actions/runs/39068842101
+
+The release workflow reruns those gates on the release tag, checks tag/version and
+archive integrity, then uses npm Trusted Publishing with provenance. The registry
+guard has direct success, missing-version, conflict and failure-path tests.
+The final CONTRIBUTING.md audit also covers these release changes; consumer runtime
+and LLVM pins are unchanged. Published archives and metadata are attached to GitHub releases.
