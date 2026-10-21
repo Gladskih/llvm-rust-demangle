@@ -1,6 +1,6 @@
 {
-  "llvmVersion": "llvmorg-23.1.3",
-  "llvmCommit": "0d261d1ca552c95a8f007e061c787ac7132fbcbc",
+  "llvmVersion": "llvmorg-23.1.4",
+  "llvmCommit": "7a941dfb2877a0b8cf30323fefa85ad019e0b0f5",
   "emscriptenVersion": "4.0.23",
   "emsdkCommit": "c0bb220cb6e6f4e0fabb6f6db9efd53390ef5e56",
   "files": {
