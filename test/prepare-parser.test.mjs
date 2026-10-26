@@ -1,7 +1,19 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
+import { mkdtemp, readFile, readdir, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { test } from "node:test";
 import { prepareUtility, prepareOwnership } from "../scripts/prepare-parser.mjs";
+
+test("importing parser transforms does not read or write build artifacts", async context => {
+  const root = await mkdtemp(join(tmpdir(), "demangle-parser-import-"));
+  context.after(() => rm(root, { recursive: true, force: true }));
+  const module = new URL("../scripts/prepare-parser.mjs", import.meta.url).href;
+  execFileSync(process.execPath, ["--input-type=module", "-e",
+    `await import(${JSON.stringify(module)});`], { cwd: root, stdio: "pipe" });
+  assert.deepEqual(await readdir(root), []);
+});
 
 const utility = await readFile(".build/llvm/llvm/include/llvm/Demangle/Utility.h", "utf8");
 const parser = await readFile(".build/llvm/llvm/lib/Demangle/RustDemangle.cpp", "utf8");
